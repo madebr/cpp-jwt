@@ -1,0 +1,17 @@
+environment:
+  PATH: C:\\Python37;C:\\Python37\Scripts;C:\Users\appveyor\AppData\Roaming\Python\Python37\Scripts;%PATH%
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+
+install:
+  - python -m pip install conan
+  - python -m conans.conan user
+
+build_script:
+  - mkdir build && cd build
+  - python -m conans.conan install ..
+  - cmake ..
+  - cmake --build . --config Release
+  - ctest . -C Release --verbose
